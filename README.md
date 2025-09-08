@@ -55,4 +55,4 @@ Para dúvidas ou sugestões, entre em contato comigo:
 
 
 - 💼 [LinkedIn](https://www.linkedin.com/in/ana-paula-modesto-0a2a2b350/)
-- 🛠️ [GitHub]()
+- 🛠️ [GitHub](https://github.com/anapaulamodesto0)
