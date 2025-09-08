@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relógio Mundial</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+      background: #f0f0f0;
+    }
+
+    .clock-container {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    select {
+      margin-right: 20px;
+      padding: 5px;
+      font-size: 1rem;
+    }
+
+    #clock {
+      font-size: 2rem;
+      font-weight: bold;
+      min-width: 120px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <select id="city-select"></select>
+    <div id="clock">
+      <span id="hours">00</span>:
+      <span id="minutes">00</span>:
+      <span id="seconds">00</span>
+    </div>
+  </div>
+
+  <script>
+    const capitals = [
+      { name: 'Brasília', timezone: 'America/Sao_Paulo' },
+      { name: 'Londres', timezone: 'Europe/London' },
+      { name: 'Nova Iorque', timezone: 'America/New_York' },
+      { name: 'Tóquio', timezone: 'Asia/Tokyo' },
+      { name: 'Paris', timezone: 'Europe/Paris' },
+      { name: 'Cidade do México', timezone: 'America/Mexico_City' },
+      { name: 'Moscou', timezone: 'Europe/Moscow' },
+      { name: 'Pequim', timezone: 'Asia/Shanghai' },
+      { name: 'Cairo', timezone: 'Africa/Cairo' },
+      { name: 'Buenos Aires', timezone: 'America/Argentina/Buenos_Aires' },
+      { name: 'Canberra', timezone: 'Australia/Sydney' },
+      { name: 'Ottawa', timezone: 'America/Toronto' },
+      { name: 'Pretória', timezone: 'Africa/Johannesburg' },
+      { name: 'Nova Délhi', timezone: 'Asia/Kolkata' },
+      { name: 'Wellington', timezone: 'Pacific/Auckland' },
+      { name: 'Lisboa', timezone: 'Europe/Lisbon' },
+      { name: 'Berlim', timezone: 'Europe/Berlin' },
+      { name: 'Roma', timezone: 'Europe/Rome' },
+      { name: 'Seul', timezone: 'Asia/Seoul' },
+      { name: 'Ancara', timezone: 'Europe/Istanbul' } // Istambul é usada para Turquia
+      // Você pode adicionar mais capitais aqui...
+    ];
+
+    const select = document.getElementById('city-select');
+    const hoursElem = document.getElementById('hours');
+    const minutesElem = document.getElementById('minutes');
+    const secondsElem = document.getElementById('seconds');
+
+    // Popula o dropdown com as capitais
+    capitals.forEach(city => {
+      const option = document.createElement('option');
+      option.value = city.timezone;
+      option.textContent = city.name;
+      select.appendChild(option);
+    });
+
+    // Define o timezone inicial como Brasília
+    select.value = 'America/Sao_Paulo';
+    let currentTZ = select.value;
+
+    // Atualiza timezone ao trocar a cidade
+    select.addEventListener('change', () => {
+      currentTZ = select.value;
+    });
+
+    // Atualiza o relógio
+    function updateClock() {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('pt-BR', {
+        timeZone: currentTZ,
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const parts = formatter.formatToParts(now);
+      const timeParts = {};
+      parts.forEach(({ type, value }) => {
+        if (type === 'hour') timeParts.hour = value;
+        if (type === 'minute') timeParts.minute = value;
+        if (type === 'second') timeParts.second = value;
+      });
+
+      hoursElem.textContent = timeParts.hour;
+      minutesElem.textContent = timeParts.minute;
+      secondsElem.textContent = timeParts.second;
+    }
+
+    // Inicia e atualiza a cada segundo
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
